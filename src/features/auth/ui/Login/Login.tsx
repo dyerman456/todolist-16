@@ -23,7 +23,6 @@ export const Login = () => {
   const theme = getTheme(themeMode)
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
     reset,
@@ -65,17 +64,20 @@ export const Login = () => {
         </FormLabel>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
-            <TextField label="Email" margin="normal" error={!!errors.email} {...register("email")} />
+            <Controller
+              name={"email"}
+              control={control}
+              render={({ field: { value, ...rest } }) => <TextField value={value} {...rest} error={!!errors.email} />}
+            />
             {errors.email && <span className={s.errorMessage}>{errors.email.message}</span>}
-            <TextField
-              type="password"
-              label="Password"
-              margin="normal"
-              error={!!errors.password}
-              {...register("password")}
+            <Controller
+              name={"password"}
+              control={control}
+              render={({ field: { value, ...rest } }) => (
+                <TextField value={value} {...rest} error={!!errors.password} margin="normal" />
+              )}
             />
             {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
-
             <FormControlLabel
               label="Remember me"
               control={
